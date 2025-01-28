@@ -17,7 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from bayes_theorem import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home, name = 'home'),
+    path('balls-in-box/', views.balls_in_box, name='balls_in_box'),
+    path('monty-hall/', views.monty_hall, name='monty_hall'),
+    path('rare-disease/', views.rare_disease, name='rare_disease'),
 ]
