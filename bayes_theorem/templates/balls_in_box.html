@@ -2,10 +2,140 @@
 <html>
 <head>
     <title>Balls in a Box</title>
+    <style>
+        /* Styles for the clickable boxes */
+        .box {
+            width: 200px;
+            height: 100px;
+            background-color: #4c5eaf;
+            color: white;
+            text-align: center;
+            line-height: 100px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .box:hover {
+            background-color: #45a049;
+        }
+
+        /* Styles for the content sections (hidden by default) */
+        .content-box {
+            display: none; /* Hidden initially */
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .message {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Initially hide the reveal button */
+        #reveal-button-A, #reveal-button-B {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <h1>Balls in a Box</h1>
-    <p>Learn about the conditional probability by drawing balls from a box.</p>
+    <p>Learn about conditional probability by drawing balls from a box.</p>
+    <p>Box A has 50 blue balls and 50 red balls.</p>
+    <p>Box B has 25 red balls and 75 blue balls.</p>
+    
+    <!-- Clickable Boxes -->
+    <a href="#" class="box" onclick="showContent('A'); return false;">Box A</a>
+    <a href="#" class="box" onclick="showContent('B'); return false;">Box B</a>
+
+    <!-- Content for Box A -->
+    <div id="boxA-content" class="content-box">
+        <p>You selected <strong>Box A</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?:</p>
+        <form method="POST" id="boxA-form">
+            {% csrf_token %}
+            <!-- Hidden field to indicate which box -->
+            <input type="hidden" name="box" value="A">
+
+            <!-- Render the form fields using {{ form.as_p }} which automatically adds labels, input fields, and validation errors -->
+            {{ form.as_p }}
+
+            <button type="submit">Submit</button>
+            <!-- Reveal Answer Button (Initially Hidden) -->
+            <button type="button" id="reveal-button-A" onclick="revealAnswer('A')">Reveal Answer</button>
+        </form>
+        <p class="message">{{ message }}</p>
+    </div>
+
+    <!-- Content for Box B -->
+    <div id="boxB-content" class="content-box">
+        <p>You selected <strong>Box B</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?:</p>
+        <form method="POST" id="boxB-form">
+            {% csrf_token %}
+            <!-- Hidden field to indicate which box -->
+            <input type="hidden" name="box" value="B">
+
+            <!-- Render the form fields using {{ form.as_p }} which automatically adds labels, input fields, and validation errors -->
+            {{ form.as_p }}
+
+            <button type="submit">Submit</button>
+            <!-- Reveal Answer Button (Initially Hidden) -->
+            <button type="button" id="reveal-button-B" onclick="revealAnswer('B')">Reveal Answer</button>
+        </form>
+        <p class="message">{{ message }}</p>
+    </div>
+
+    <script>
+        function showContent(box) {
+            // Hide both content boxes
+            document.getElementById("boxA-content").style.display = "none";
+            document.getElementById("boxB-content").style.display = "none";
+            // Show the selected box content
+            var target = document.getElementById("box" + box + "-content");
+            if (target) {
+                target.style.display = "block";
+            }
+        }
+
+        // If the page is reloaded after a POST submission, show the appropriate box.
+        window.onload = function() {
+            var selectedBox = "{{ selected_box }}";
+            if(selectedBox) {
+                showContent(selectedBox);  // Show the selected box based on the box identifier
+                // If the message is present, display the appropriate "Reveal Answer" button
+                if("{{ message }}") {
+                    document.getElementById("reveal-button-" + selectedBox).style.display = "inline-block";
+                }
+            }
+        };
+
+        // Function to reveal the correct answer when the user clicks "Reveal Answer"
+        function revealAnswer(box) {
+            var correctAnswer = box === 'A' ? 0.5 : 2 / 3;
+            alert("The correct answer for Box " + box + " is: " + correctAnswer);
+        }
+
+        // Show "Reveal Answer" button after form submission
+        const formA = document.getElementById('boxA-form');
+        const formB = document.getElementById('boxB-form');
+
+        // After form submission, show the "Reveal Answer" button
+        formA.addEventListener('submit', function() {
+            document.getElementById('reveal-button-A').style.display = 'inline-block';
+        });
+
+        formB.addEventListener('submit', function() {
+            document.getElementById('reveal-button-B').style.display = 'inline-block';
+        });
+    </script>
+
+    <!-- Navigation links -->
     <p><a href="{% url 'home' %}">Go back to the home page</a></p>
     <p>Learn via a different scenario!</p>
     <p><a href="{% url 'monty_hall' %}">Monty Hall Problem</a></p>

@@ -1,0 +1,57 @@
+<style>
+    .box {
+        width: 200px;
+        height: 100px;
+        background-color: #4c5eaf;
+        color: white;
+        text-align: center;
+        line-height: 100px;
+        font-size: 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .box:hover {
+        background-color: #45a049;
+    }
+    .hidden {
+            display: none;
+        }
+
+        .content-box {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            display: none; /* Ensures content is hidden on page load */
+        }
+</style>
+
+
+
+<!-- Hidden Content for Box A -->
+<div id="boxA-content" class="hidden content-box">
+    <p>You selected <strong>Box A</strong>. What is the probablity of picking a blue ball given we pick from this box?:</p>
+    <input type="text" id="input-boxA" placeholder="Enter a number">
+</div>
+
+<!-- Hidden Content for Box B -->
+<div id="boxB-content" class="hidden content-box">
+    <p>You selected <strong>Box B</strong>. What is the proablity of picking a blue ball given we pick from this box?:</p>
+    <input type="text" id="input-boxB" placeholder="Enter a number">
+</div>
+
+<!-- <a href="{% url 'balls_in_box' %}" class="box">
+    Box A
+</a>
+
+<a href="{% url 'balls_in_box' %}" class="box">
+    Box B
+</a> -->
+
+
+
