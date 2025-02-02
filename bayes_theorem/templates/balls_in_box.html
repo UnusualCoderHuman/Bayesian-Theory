@@ -2,6 +2,13 @@
 <html>
 <head>
     <title>Balls in a Box</title>
+    {% load static %}
+    
+    <!-- Include MathJax CDN for rendering LaTeX formulas -->
+    <script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+
     <style>
         /* Styles for the clickable boxes */
         .box {
@@ -39,9 +46,46 @@
             margin-top: 10px;
         }
 
-        /* Initially hide the reveal button */
+        /* Initially hide the reveal buttons */
         #reveal-button-A, #reveal-button-B {
             display: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -57,17 +101,12 @@
 
     <!-- Content for Box A -->
     <div id="boxA-content" class="content-box">
-        <p>You selected <strong>Box A</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?:</p>
+        <p>You selected <strong>Box A</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?</p>
         <form method="POST" id="boxA-form">
             {% csrf_token %}
-            <!-- Hidden field to indicate which box -->
             <input type="hidden" name="box" value="A">
-
-            <!-- Render the form fields using {{ form.as_p }} which automatically adds labels, input fields, and validation errors -->
             {{ form.as_p }}
-
             <button type="submit">Submit</button>
-            <!-- Reveal Answer Button (Initially Hidden) -->
             <button type="button" id="reveal-button-A" onclick="revealAnswer('A')">Reveal Answer</button>
         </form>
         <p class="message">{{ message }}</p>
@@ -75,64 +114,77 @@
 
     <!-- Content for Box B -->
     <div id="boxB-content" class="content-box">
-        <p>You selected <strong>Box B</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?:</p>
+        <p>You selected <strong>Box B</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?</p>
         <form method="POST" id="boxB-form">
             {% csrf_token %}
-            <!-- Hidden field to indicate which box -->
             <input type="hidden" name="box" value="B">
-
-            <!-- Render the form fields using {{ form.as_p }} which automatically adds labels, input fields, and validation errors -->
             {{ form.as_p }}
-
             <button type="submit">Submit</button>
-            <!-- Reveal Answer Button (Initially Hidden) -->
             <button type="button" id="reveal-button-B" onclick="revealAnswer('B')">Reveal Answer</button>
         </form>
         <p class="message">{{ message }}</p>
     </div>
 
+    <!-- Modal for Box A -->
+    <div id="answerModalA" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('A')">&times;</span>
+            <h2>Conditional Probability Explanation (Box A)</h2>
+            <p>Here’s the original formula for conditional probability:</p>
+            <img src="{% static 'images/conditional_probablity.png' %}" alt="Conditional Probability Formula" width="100%">
+            <p>Let \(P(A)\) be replaced by \(P(\text{Blue})\), the number of blue balls in total.</p>
+            <p>Let \(P(B)\) be replaced by \(P(A)\), the total number of balls in Box A.</p>
+            <p>\( P(\text{Blue} \cap A) \) represents the number of blue balls in Box A</p>
+            <p>\[ P(\text{Blue} | A) = \frac{50}{100} = 0.5 \]</p>
+        </div>
+    </div>
+
+    <!-- Modal for Box B -->
+    <div id="answerModalB" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('B')">&times;</span>
+            <h2>Conditional Probability Explanation (Box B)</h2>
+            <p>Here’s the original formula for conditional probability:</p>
+            <img src="{% static 'images/conditional_probablity.png' %}" alt="Conditional Probability Formula" width="100%">
+            <p>Let \(P(A)\) be replaced by \(P(\text{Blue})\),be the number of blue balls in total.</p>
+            <p>Let \(P(B)\) be the total number of balls in Box B.</p>
+            <p>\( P(\text{Blue} \cap B) \) represents the number of blue balls in Box B</p>
+            <p>So we get: </p>
+            <p>\[ P(\text{Blue} | B) = \frac{150}{200} = 0.75 \]</p>
+        </div>
+    </div>
+
     <script>
+        // Function to display the content for the selected box
         function showContent(box) {
-            // Hide both content boxes
             document.getElementById("boxA-content").style.display = "none";
             document.getElementById("boxB-content").style.display = "none";
-            // Show the selected box content
             var target = document.getElementById("box" + box + "-content");
             if (target) {
                 target.style.display = "block";
             }
         }
 
-        // If the page is reloaded after a POST submission, show the appropriate box.
+        // Function to open the appropriate modal
+        function revealAnswer(box) {
+            document.getElementById('answerModal' + box).style.display = "block";
+        }
+
+        // Function to close the modal
+        function closeModal(box) {
+            document.getElementById('answerModal' + box).style.display = "none";
+        }
+
+        // When the page loads (or reloads after a POST), show the correct box content and reveal button if applicable.
         window.onload = function() {
             var selectedBox = "{{ selected_box }}";
-            if(selectedBox) {
-                showContent(selectedBox);  // Show the selected box based on the box identifier
-                // If the message is present, display the appropriate "Reveal Answer" button
-                if("{{ message }}") {
+            if (selectedBox) {
+                showContent(selectedBox);
+                if ("{{ message }}") {
                     document.getElementById("reveal-button-" + selectedBox).style.display = "inline-block";
                 }
             }
         };
-
-        // Function to reveal the correct answer when the user clicks "Reveal Answer"
-        function revealAnswer(box) {
-            var correctAnswer = box === 'A' ? 0.5 : 0.75;
-            alert("The correct answer for Box " + box + " is: " + correctAnswer);
-        }
-
-        // Show "Reveal Answer" button after form submission
-        const formA = document.getElementById('boxA-form');
-        const formB = document.getElementById('boxB-form');
-
-        // After form submission, show the "Reveal Answer" button
-        formA.addEventListener('submit', function() {
-            document.getElementById('reveal-button-A').style.display = 'inline-block';
-        });
-
-        formB.addEventListener('submit', function() {
-            document.getElementById('reveal-button-B').style.display = 'inline-block';
-        });
     </script>
 
     <!-- Navigation links -->
