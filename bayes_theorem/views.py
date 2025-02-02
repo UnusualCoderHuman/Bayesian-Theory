@@ -5,7 +5,7 @@ def balls_in_box(request):
     # Define different correct answers for each box.
     correct_answers = {
         'A': 0.5,   # Correct answer for Box A
-        'B': 2/3,   # Correct answer for Box B
+        'B': 0.75,   # Correct answer for Box B
     }
 
     message = ""
@@ -13,10 +13,10 @@ def balls_in_box(request):
     form = BoxInputForm()  # Create a new form instance
 
     if request.method == "POST":
-        print("POST request reiveved")
+        # print("POST request reiveved")
         form = BoxInputForm(request.POST)
         # Get the hidden box identifier
-        print("Form data:", request.POST)
+        # print("Form data:", request.POST)
         box = request.POST.get('box')
         selected_box = box  # So that we can ensure the appropriate box content is visible after submission
         

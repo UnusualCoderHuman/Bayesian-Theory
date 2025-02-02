@@ -1,6 +1,7 @@
 from django import forms
 from fractions import Fraction
-
+#Next write tests for input field 
+#And display image instead
 class BoxInputForm(forms.Form):
     # CharField to accept fractions
     user_input = forms.CharField(label="Enter your answer", required=True)
