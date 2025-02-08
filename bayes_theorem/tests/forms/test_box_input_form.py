@@ -1,5 +1,7 @@
 from django.test import TestCase
 from bayes_theorem.forms import BoxInputForm
+# from views  import balls_in_box
+from bayes_theorem.config import correct_answers_for_box
 
 class BoxInputFormTestCase(TestCase):
     def setUp(self):
@@ -38,35 +40,35 @@ class BoxInputFormTestCase(TestCase):
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertEqual(form.cleaned_data['user_input'], 0.5)
+        self.assertEqual(form.cleaned_data['user_input'], correct_answers_for_box['A'])
     
     def test_box_a_correct_answer_fraction(self):
         form = BoxInputForm(data=self.correct_answer_box_a_fraction)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertEqual(form.cleaned_data['user_input'], 0.5)
+        self.assertEqual(form.cleaned_data['user_input'], correct_answers_for_box['A'])
 
     def test_box_a_correct_answer_fraction_variant(self):
         form = BoxInputForm(data=self.correct_answer_box_a_fraction_variant)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertEqual(form.cleaned_data['user_input'], 0.5)
+        self.assertEqual(form.cleaned_data['user_input'], correct_answers_for_box['A'])
     
     def test_box_a_incorrect_answer_decimal(self):
         form = BoxInputForm(data=self.incorrect_answer_box_a_or_b_decimal)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertNotEqual(form.cleaned_data['user_input'], 0.5)
+        self.assertNotEqual(form.cleaned_data['user_input'], correct_answers_for_box['A'])
     
     def test_box_a_incorrect_answer_fraction(self):
         form = BoxInputForm(data=self.incorrect_answer_box_a_or_b_fraction)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertNotEqual(form.cleaned_data['user_input'], 0.5)
+        self.assertNotEqual(form.cleaned_data['user_input'], correct_answers_for_box['A'])
     
 
     def test_box_b_correct_answer_decimal(self):
@@ -74,35 +76,35 @@ class BoxInputFormTestCase(TestCase):
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertEqual(form.cleaned_data['user_input'], 0.75)
+        self.assertEqual(form.cleaned_data['user_input'], correct_answers_for_box['B'])
     
     def test_box_b_correct_answer_fraction(self):
         form = BoxInputForm(data=self.correct_answer_box_b_fraction)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertEqual(form.cleaned_data['user_input'], 0.75)
+        self.assertEqual(form.cleaned_data['user_input'], correct_answers_for_box['B'])
 
     def test_box_b_correct_answer_fraction_variant(self):
         form = BoxInputForm(data=self.correct_answer_box_b_fraction_variant)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertEqual(form.cleaned_data['user_input'], 0.75)
+        self.assertEqual(form.cleaned_data['user_input'], correct_answers_for_box['B'])
     
     def test_box_b_incorrect_answer_decimal(self):
         form = BoxInputForm(data=self.incorrect_answer_box_a_or_b_decimal)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertNotEqual(form.cleaned_data['user_input'], 0.75)
+        self.assertNotEqual(form.cleaned_data['user_input'], correct_answers_for_box['B'])
     
     def test_box_b_incorrect_answer_fraction(self):
         form = BoxInputForm(data=self.incorrect_answer_box_a_or_b_fraction)
         # Assert that the form is valid
         self.assertTrue(form.is_valid())
         #Assert that the value is correct
-        self.assertNotEqual(form.cleaned_data['user_input'], 0.75)
+        self.assertNotEqual(form.cleaned_data['user_input'], correct_answers_for_box['B'])
     
 
     

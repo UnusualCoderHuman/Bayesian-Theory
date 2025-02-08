@@ -1,13 +1,14 @@
 from django.shortcuts import render
 from .forms import BoxInputForm
+from .config import correct_answers_for_box
+
+# Create your views here.
+def home(request):
+    return render(request,'home.html')
+
+
 
 def balls_in_box(request):
-    # Define different correct answers for each box.
-    correct_answers = {
-        'A': 0.5,   # Correct answer for Box A
-        'B': 0.75,   # Correct answer for Box B
-    }
-
     message = ""
     selected_box = ""  # To know which box content to show on error (if needed)
     form = BoxInputForm()  # Create a new form instance
@@ -20,9 +21,9 @@ def balls_in_box(request):
         box = request.POST.get('box')
         selected_box = box  # So that we can ensure the appropriate box content is visible after submission
         
-        if form.is_valid() and box in correct_answers:
+        if form.is_valid() and box in correct_answers_for_box:
             user_value = form.cleaned_data["user_input"]
-            correct_answer = correct_answers[box]
+            correct_answer = correct_answers_for_box[box]
             if user_value == correct_answer:
                 message = "✅ That's correct!"
             else:
@@ -39,18 +40,11 @@ def balls_in_box(request):
     return render(request, "balls_in_box.html", context)
 
 
-
-
-
-# Create your views here.
-def home(request):
-    return render(request,'home.html')
-
-# def balls_in_box(request):
-#     return render(request, 'balls_in_box.html')
-
 def monty_hall(request):
     return render(request, 'monty_hall.html')
 
 def rare_disease(request):
     return render(request, 'rare_disease.html')
+
+
+
