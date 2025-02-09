@@ -28,19 +28,27 @@
 <!-- Content for Box C -->
 <div id="boxC-content" class="content-box" style="display: none;">
     <p>Fill in the number of red and blue balls for Box C.</p>
-    <form method="POST" id="boxC-form">
+    <form method="POST" action="{% url 'box_c' %}" id="boxC-form">
         {% csrf_token %}
         <input type="hidden" name="box" value="C">
-        
-        <label for="red_balls">Red Balls: </label>
-        <input type="number" id="red_balls" name="red_balls" min="0" value="{{ red_balls }}" required><br><br>
 
-        <label for="blue_balls">Blue Balls: </label>
-        <input type="number" id="blue_balls" name="blue_balls" min="0" value="{{ blue_balls }}" required><br><br>
+        <!-- Step 1: Input Red and Blue Balls -->
+        {% if not red_balls and not blue_balls %}
+            <label for="red_balls">Red Balls: </label>
+            <input type="number" id="red_balls" name="red_balls" min="0" value="{{ red_balls }}" required><br><br>
 
-        <button type="submit">Submit</button>
-        <button type="button" id="reveal-button-C" onclick="revealAnswer('C')">Reveal Answer</button>
+            <label for="blue_balls">Blue Balls: </label>
+            <input type="number" id="blue_balls" name="blue_balls" min="0" value="{{ blue_balls }}" required><br><br>
+
+            <button type="submit">Submit Red and Blue Balls</button>
+        {% else %}
+            <!-- Step 2: Ask for Probability Answer -->
+            <p>What is the probability of selecting a red ball from Box C?</p>
+            <label for="probability_answer">Probability: </label>
+            <input type="number" id="probability_answer" name="probability_answer" step="0.01" value="{{ probability_answer }}" required><br><br>
+
+            <button type="submit">Submit Probability Answer</button>
+        {% endif %}
     </form>
     <p class="message">{{ message }}</p>
 </div>
-

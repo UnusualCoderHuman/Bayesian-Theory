@@ -13,7 +13,7 @@ def balls_in_box(request):
     message = ""
     selected_box = ""  # To know which box content to show on error (if needed)
     form = BoxInputForm()  # Create a new form instance
-
+    # form2 = BoxCForm()
     if request.method == "POST":
         # print("POST request reiveved")
         form = BoxInputForm(request.POST)
@@ -40,30 +40,51 @@ def balls_in_box(request):
     }
     return render(request, "balls_in_box.html", context)
 
+
 def box_c_view(request):
     message = ""
     red_balls = None
     blue_balls = None
-    
+    probability_answer = None
+
     if request.method == "POST":
         form = BoxCForm(request.POST)
+
+        # Check if the form is valid
         if form.is_valid():
-            red_balls = form.cleaned_data['red_balls']
-            blue_balls = form.cleaned_data['blue_balls']
-            
-            message = f"You've selected {red_balls} red balls and {blue_balls} blue balls."
+            # Step 1: Handle red/blue balls input
+            if form.cleaned_data['red_balls'] is not None and form.cleaned_data['blue_balls'] is not None:
+                red_balls = form.cleaned_data['red_balls']
+                blue_balls = form.cleaned_data['blue_balls']
+                # Calculate probability based on the balls entered
+                total_balls = red_balls + blue_balls
+                correct_probability = red_balls / total_balls if total_balls > 0 else 0
+                
+                # Step 2: Handle the probability question
+                if form.cleaned_data['probability_answer'] is not None:
+                    probability_answer = form.cleaned_data['probability_answer']
+                    
+                    # Check if the probability answer is correct
+                    if probability_answer == correct_probability:
+                        message = f"✅ Correct! The probability of selecting a red ball is {correct_probability:.2f}."
+                    else:
+                        message = f"❌ Incorrect. The correct probability is {correct_probability:.2f}."
+            else:
+                message = "⚠️ Please enter valid numbers for red and blue balls."
         else:
-            message = "Please enter valid numbers for the balls."
+            message = "⚠️ Please enter valid values."
+
     else:
         form = BoxCForm()
 
-    # Render the template with context
     return render(request, "balls_in_box.html", {
         'form': form,
         'message': message,
         'red_balls': red_balls,
-        'blue_balls': blue_balls
+        'blue_balls': blue_balls,
+        'probability_answer': probability_answer
     })
+
 def monty_hall(request):
     return render(request, 'monty_hall.html')
 

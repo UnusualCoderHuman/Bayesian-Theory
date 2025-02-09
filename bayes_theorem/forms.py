@@ -17,6 +17,8 @@ class BoxInputForm(forms.Form):
             raise forms.ValidationError("Please enter a valid fraction, e.g., '3/4'. Or a decimal number like '0.25'")
 
         return float(fraction_value)  
+
 class BoxCForm(forms.Form):
-    red_balls = forms.IntegerField(label='Number of Red Balls', min_value=0)
-    blue_balls = forms.IntegerField(label='Number of Blue Balls', min_value=0)
+    red_balls = forms.IntegerField(label='Number of Red Balls', min_value=0, required=False)
+    blue_balls = forms.IntegerField(label='Number of Blue Balls', min_value=0, required=False)
+    probability_answer = forms.FloatField(label='Probability of selecting a red ball', required=False)
