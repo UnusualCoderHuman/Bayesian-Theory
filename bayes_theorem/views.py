@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .forms import BoxInputForm
+from .forms import BoxInputForm, BoxCForm
+
 from .config import correct_answers_for_box
 
 # Create your views here.
@@ -39,7 +40,30 @@ def balls_in_box(request):
     }
     return render(request, "balls_in_box.html", context)
 
+def box_c_view(request):
+    message = ""
+    red_balls = None
+    blue_balls = None
+    
+    if request.method == "POST":
+        form = BoxCForm(request.POST)
+        if form.is_valid():
+            red_balls = form.cleaned_data['red_balls']
+            blue_balls = form.cleaned_data['blue_balls']
+            
+            message = f"You've selected {red_balls} red balls and {blue_balls} blue balls."
+        else:
+            message = "Please enter valid numbers for the balls."
+    else:
+        form = BoxCForm()
 
+    # Render the template with context
+    return render(request, "balls_in_box.html", {
+        'form': form,
+        'message': message,
+        'red_balls': red_balls,
+        'blue_balls': blue_balls
+    })
 def monty_hall(request):
     return render(request, 'monty_hall.html')
 

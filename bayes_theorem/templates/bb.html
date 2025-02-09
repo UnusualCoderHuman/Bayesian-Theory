@@ -101,12 +101,62 @@
     <!-- Clickable Boxes -->
     <a href="#" class="box" onclick="showContent('A'); return false;">Box A</a>
     <a href="#" class="box" onclick="showContent('B'); return false;">Box B</a>
-    <a href="#" class="box" onclick="showContent('C'); return false;">Box C</a>
 
+    <!-- Content for Box A -->
+    <div id="boxA-content" class="content-box">
+        <p>You selected <strong>Box A</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?</p>
+        <form method="POST" id="boxA-form">
+            {% csrf_token %}
+            <input type="hidden" name="box" value="A">
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+            <button type="button" id="reveal-button-A" onclick="revealAnswer('A')">Reveal Answer</button>
+        </form>
+        <p class="message">{{ message }}</p>
+    </div>
 
-    {% include 'partials/box_content.html' %}
-    {% include 'partials/modal.html'%}
-   
+    <!-- Content for Box B -->
+    <div id="boxB-content" class="content-box">
+        <p>You selected <strong>Box B</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?</p>
+        <form method="POST" id="boxB-form">
+            {% csrf_token %}
+            <input type="hidden" name="box" value="B">
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+            <button type="button" id="reveal-button-B" onclick="revealAnswer('B')">Reveal Answer</button>
+        </form>
+        <p class="message">{{ message }}</p>
+    </div>
+
+    <!-- Modal for Box A -->
+    <div id="answerModalA" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('A')">&times;</span>
+            <h2>Conditional Probability Explanation (Box A)</h2>
+            <p>Here’s the original formula for conditional probability:</p>
+            <img src="{% static 'images/conditional_probablity.png' %}" alt="Conditional Probability Formula" width="100%">
+            <p>Let \(P(A)\) be replaced by \(P(\text{Blue})\), the number of blue balls in total.</p>
+            <p>Let \(P(B)\) be replaced by \(P(A)\), the total number of balls in Box A.</p>
+            <p>\( P(\text{Blue} \cap A) \) represents the number of blue balls in Box A</p>
+            <p>\[ P(\text{Blue} | A) = \frac{50}{100} = 0.5 \]</p>
+        </div>
+    </div>
+
+    <!-- Modal for Box B -->
+    <div id="answerModalB" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('B')">&times;</span>
+            <h2>Conditional Probability Explanation (Box B)</h2>
+            <p>Here’s the original formula for conditional probability:</p>
+            <img src="{% static 'images/conditional_probablity.png' %}" alt="Conditional Probability Formula" width="100%">
+            <p>Let \(P(A)\) be replaced by \(P(\text{Blue})\),be the number of blue balls in total.</p>
+            <p>Let \(P(B)\) be the total number of balls in Box B.</p>
+            <p>\( P(\text{Blue} \cap B) \) represents the number of blue balls in Box B</p>
+            <p>So we get: </p>
+            <p>\[ P(\text{Blue} | B) = \frac{150}{200} = 0.75 \]</p>
+        </div>
+    </div>
+
     <script>
         // Function to display the content for the selected box
         function showContent(box) {
@@ -139,6 +189,33 @@
             }
         };
     </script>
+
+    <p>Now that you've had a warm up. Try filling in the number of balls yourself!</p>
+    <p>Click on the box to fill in a custom number of red and blue balls.</p>
+    
+    <a href="#" class="box" onclick="showContent('C'); return false;">Box C</a>
+
+    <!-- Content for Box C -->
+<div id="boxC-content" class="content-box">
+    <p>Fill in the number of red and blue balls for Box C.</p>
+    <form method="POST" id="boxC-form">
+        {% csrf_token %}
+        <input type="hidden" name="box" value="C">
+        
+        <!-- Input for Red Balls -->
+        <label for="red_balls">Red Balls: </label>
+        <input type="number" id="red_balls" name="red_balls" min="0" value="{{ red_balls }}" required><br><br>
+
+        <!-- Input for Blue Balls -->
+        <label for="blue_balls">Blue Balls: </label>
+        <input type="number" id="blue_balls" name="blue_balls" min="0" value="{{ blue_balls }}" required><br><br>
+
+        <button type="submit">Submit</button>
+        <button type="button" id="reveal-button-C" onclick="revealAnswer('C')">Reveal Answer</button>
+    </form>
+    <p class="message">{{ message }}</p>
+</div>
+
 
     <!-- Navigation links -->
     <p><a href="{% url 'home' %}">Go back to the home page</a></p>

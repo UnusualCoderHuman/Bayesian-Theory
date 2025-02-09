@@ -1,0 +1,46 @@
+{% load static %}
+<!-- Content for Box A -->
+<div id="boxA-content" class="content-box">
+    <p>You selected <strong>Box A</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?</p>
+    <form method="POST" id="boxA-form">
+        {% csrf_token %}
+        <input type="hidden" name="box" value="A">
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+        <button type="button" id="reveal-button-A" onclick="revealAnswer('A')">Reveal Answer</button>
+    </form>
+    <p class="message">{{ message }}</p>
+</div>
+
+<!-- Content for Box B -->
+<div id="boxB-content" class="content-box">
+    <p>You selected <strong>Box B</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?</p>
+    <form method="POST" id="boxB-form">
+        {% csrf_token %}
+        <input type="hidden" name="box" value="B">
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+        <button type="button" id="reveal-button-B" onclick="revealAnswer('B')">Reveal Answer</button>
+    </form>
+    <p class="message">{{ message }}</p>
+</div>
+
+<!-- Content for Box C -->
+<div id="boxC-content" class="content-box" style="display: none;">
+    <p>Fill in the number of red and blue balls for Box C.</p>
+    <form method="POST" id="boxC-form">
+        {% csrf_token %}
+        <input type="hidden" name="box" value="C">
+        
+        <label for="red_balls">Red Balls: </label>
+        <input type="number" id="red_balls" name="red_balls" min="0" value="{{ red_balls }}" required><br><br>
+
+        <label for="blue_balls">Blue Balls: </label>
+        <input type="number" id="blue_balls" name="blue_balls" min="0" value="{{ blue_balls }}" required><br><br>
+
+        <button type="submit">Submit</button>
+        <button type="button" id="reveal-button-C" onclick="revealAnswer('C')">Reveal Answer</button>
+    </form>
+    <p class="message">{{ message }}</p>
+</div>
+

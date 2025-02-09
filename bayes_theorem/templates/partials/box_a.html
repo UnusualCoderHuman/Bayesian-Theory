@@ -1,0 +1,12 @@
+<!-- box_a.html -->
+<div id="boxA-content" class="content-box">
+    <p>You selected <strong>Box A</strong>. Given we pick a ball at random from this box, what is the probability that it is a blue ball?</p>
+    <form method="POST" id="boxA-form">
+        {% csrf_token %}
+        <input type="hidden" name="box" value="A">
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+        <button type="button" id="reveal-button-A" onclick="revealAnswer('A')">Reveal Answer</button>
+    </form>
+    <p class="message">{{ message }}</p>
+</div>

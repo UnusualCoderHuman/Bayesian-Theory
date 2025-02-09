@@ -17,12 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from bayes_theorem import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.home, name = 'home'),
     path('balls-in-box/', views.balls_in_box, name='balls_in_box'),
+    path('box_c/', views.box_c_view, name='box_c'),
     path('monty-hall/', views.monty_hall, name='monty_hall'),
     path('rare-disease/', views.rare_disease, name='rare_disease'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

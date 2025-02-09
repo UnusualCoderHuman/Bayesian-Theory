@@ -1,0 +1,29 @@
+{% load static %}
+<!-- Modal for Box A -->
+<div id="answerModalA" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('A')">&times;</span>
+        <h2>Conditional Probability Explanation (Box A)</h2>
+        <p>Here’s the original formula for conditional probability:</p>
+        <img src="{% static 'images/conditional_probablity.png' %}" alt="Conditional Probability Formula" width="100%">
+        <p>Let \(P(A)\) be replaced by \(P(\text{Blue})\), the number of blue balls in total.</p>
+        <p>Let \(P(B)\) be replaced by \(P(A)\), the total number of balls in Box A.</p>
+        <p>\( P(\text{Blue} \cap A) \) represents the number of blue balls in Box A</p>
+        <p>So we get: </p>
+        <p>\[ P(\text{Blue} | A) = \frac{50}{100} = 0.5 \]</p>
+    </div>
+</div>
+<!-- Modal for Box B -->
+<div id="answerModalB" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('B')">&times;</span>
+        <h2>Conditional Probability Explanation (Box B)</h2>
+        <p>Here’s the original formula for conditional probability:</p>
+        <img src="{% static 'images/conditional_probablity.png' %}" alt="Conditional Probability Formula" width="100%">
+        <p>Let \(P(A)\) be replaced by \(P(\text{Blue})\),be the number of blue balls in total.</p>
+        <p>Let \(P(B)\) be the total number of balls in Box B.</p>
+        <p>\( P(\text{Blue} \cap B) \) represents the number of blue balls in Box B</p>
+        <p>So we get: </p>
+        <p>\[ P(\text{Blue} | B) = \frac{150}{200} = 0.75 \]</p>
+    </div>
+</div>

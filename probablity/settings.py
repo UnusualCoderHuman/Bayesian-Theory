@@ -122,6 +122,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",  # If using the default static folder structure
 ]
 
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Folder where collectstatic will store files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
