@@ -112,9 +112,16 @@
         function showContent(box) {
             document.getElementById("boxA-content").style.display = "none";
             document.getElementById("boxB-content").style.display = "none";
+            document.getElementById("boxC-content").style.display = "none";
             var target = document.getElementById("box" + box + "-content");
             if (target) {
                 target.style.display = "block";
+            }
+            if (box !== "C") {
+                let boxCForm = document.getElementById("boxC-form");
+                if (boxCForm) {
+                    boxCForm.reset();
+                }
             }
         }
 
@@ -139,7 +146,21 @@
             }
         };
     </script>
-
+    <script>
+        function showBox(boxId) {
+            // Hide all boxes first
+            document.getElementById('boxA-content').style.display = 'none';
+            document.getElementById('boxB-content').style.display = 'none';
+            document.getElementById('boxC-content').style.display = 'none';
+        
+            // Show the selected box
+            document.getElementById(boxId + '-content').style.display = 'block';
+        
+            // Update the selected box in the context
+            document.getElementById('selected-box').value = boxId;
+        }
+        </script>
+        
     <!-- Navigation links -->
     <p><a href="{% url 'home' %}">Go back to the home page</a></p>
     <p>Learn via a different scenario!</p>
